@@ -16,19 +16,8 @@ login=$(curl http://${target}/graphql \
   --data-raw '{"operationName":"Login","variables":{"input":{"email":"user@automatisch.io","password":"sample"}},"query":"mutation Login($input: LoginInput) {\n  login(input: $input) {\n    token\n    user {\n      id\n      email\n      __typename\n    }\n    __typename\n  }\n}\n"}' \
   --compressed)
 
-  echo "___________________"
-  echo $login
-  echo "___________________"
-
   token=$(echo $login | jq -r '.data.login.token' )
 
-  echo "___________________"
-  echo $token
-  echo "___________________"
-  echo "___________________"
-  echo $ADMIN_EMAIL
-  echo "___________________"
-  echo "EMAIL"
   sleep 10s;
 
 
@@ -41,7 +30,6 @@ login=$(curl http://${target}/graphql \
   --data-raw '{"operationName":"UpdateUser","variables":{"input":{"email":"'${ADMIN_EMAIL}'"}},"query":"mutation UpdateUser($input: UpdateUserInput) {\n  updateUser(input: $input) {\n    id\n    email\n    updatedAt\n    __typename\n  }\n}\n"}' \
   --compressed
 
-  echo "PASSWORD"
   sleep 10s;
 
   curl http://${target}/graphql \
