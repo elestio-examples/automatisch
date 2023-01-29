@@ -1,6 +1,9 @@
 # set env vars
 set -o allexport; source .env; set +o allexport;
 
+echo "Waiting..."
+sleep 10s;
+
 target=$(docker-compose port main 3000)
 
 
