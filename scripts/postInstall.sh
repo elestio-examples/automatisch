@@ -38,7 +38,7 @@ login=$(curl http://${target}/graphql \
   -H 'authorization: '${token} \
   -H 'content-type: application/json' \
   -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36' \
-  --data-raw '{"operationName":"UpdateUser","variables":{"input":{"email":'${ADMIN_EMAIL}'}},"query":"mutation UpdateUser($input: UpdateUserInput) {\n  updateUser(input: $input) {\n    id\n    email\n    updatedAt\n    __typename\n  }\n}\n"}' \
+  --data-raw '{"operationName":"UpdateUser","variables":{"input":{"email":"'${ADMIN_EMAIL}'"}},"query":"mutation UpdateUser($input: UpdateUserInput) {\n  updateUser(input: $input) {\n    id\n    email\n    updatedAt\n    __typename\n  }\n}\n"}' \
   --compressed
 
   echo "PASSWORD"
@@ -50,5 +50,5 @@ login=$(curl http://${target}/graphql \
   -H 'authorization: '${token} \
   -H 'content-type: application/json' \
   -H 'user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36' \
-  --data-raw '{"operationName":"UpdateUser","variables":{"input":{"password":'"${ADMIN_PASSWORD}"'}},"query":"mutation UpdateUser($input: UpdateUserInput) {\n  updateUser(input: $input) {\n    id\n    email\n    updatedAt\n    __typename\n  }\n}\n"}' \
+  --data-raw '{"operationName":"UpdateUser","variables":{"input":{"password":"'${ADMIN_PASSWORD}'"}},"query":"mutation UpdateUser($input: UpdateUserInput) {\n  updateUser(input: $input) {\n    id\n    email\n    updatedAt\n    __typename\n  }\n}\n"}' \
   --compressed
