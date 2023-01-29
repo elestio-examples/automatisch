@@ -6,8 +6,6 @@ services:
     ports:
       - '172.17.0.1:3210:3000'
     depends_on:
-      postgres:
-        condition: service_healthy
       redis:
         condition: service_started
     environment:
@@ -52,11 +50,6 @@ services:
       - POSTGRES_PASSWORD=automatisch_password
     volumes:
       - ./postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
-      interval: 10s
-      timeout: 5s
-      retries: 5
   redis:
     image: 'redis:7.0.4'
     restart: always
