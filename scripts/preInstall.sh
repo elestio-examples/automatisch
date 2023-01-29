@@ -1,5 +1,7 @@
 #set env vars
-#set -o allexport; source .env; set +o allexport;
+set -o allexport; source .env; set +o allexport;
+
+apt install jq -y
 
 mkdir -p ./automatisch_storage
 mkdir -p ./postgres_data
