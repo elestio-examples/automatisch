@@ -28,6 +28,8 @@ login=$(curl http://${target}/graphql \
   echo "___________________"
   echo $ADMIN_EMAIL
   echo "___________________"
+  echo "EMAIL"
+  sleep 10s;
 
 
   curl http://${target}/graphql \
@@ -39,6 +41,8 @@ login=$(curl http://${target}/graphql \
   --data-raw '{"operationName":"UpdateUser","variables":{"input":{"email":'${ADMIN_EMAIL}'}},"query":"mutation UpdateUser($input: UpdateUserInput) {\n  updateUser(input: $input) {\n    id\n    email\n    updatedAt\n    __typename\n  }\n}\n"}' \
   --compressed
 
+  echo "PASSWORD"
+  sleep 10s;
 
   curl http://${target}/graphql \
   -H 'accept: */*' \
