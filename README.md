@@ -10,8 +10,8 @@ Deploy Automatisch with CI/CD on Elestio
 
 # Once deployed ...
 
-You can can open Automatisch UI here:
+You can open Automatisch UI here:
 
     URL: https://[CI_CD_DOMAIN]
-    email:[ADMIN_EMAIL]
+    email: [ADMIN_EMAIL]
     password: [ADMIN_PASSWORD]
