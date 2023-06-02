@@ -1,7 +1,7 @@
 version: '3.9'
 services:
   main:
-    image: automatischio/automatisch:latest
+    image: automatischio/automatisch:${SOFTWARE_VERSION_TAG}
     restart: always
     ports:
       - '172.17.0.1:3210:3000'
@@ -24,7 +24,7 @@ services:
     volumes:
       - ./automatisch_storage:/automatisch/storage
   worker:
-    image: automatischio/automatisch:latest
+    image: automatischio/automatisch:${SOFTWARE_VERSION_TAG}
     restart: always
     depends_on:
       - main
