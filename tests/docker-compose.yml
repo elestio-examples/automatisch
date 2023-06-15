@@ -1,0 +1,57 @@
+version: "3.9"
+services:
+  main:
+    image: elestio4test/automatisch:${SOFTWARE_VERSION_TAG}
+    restart: always
+    ports:
+      - "172.17.0.1:3210:3000"
+    depends_on:
+      redis:
+        condition: service_started
+    environment:
+      - HOST=${BASE_URL}
+      - PROTOCOL=https
+      - PORT=3000
+      - APP_ENV=production
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DATABASE=automatisch
+      - POSTGRES_USERNAME=automatisch_user
+      - POSTGRES_PASSWORD=automatisch_password
+      - ENCRYPTION_KEY=${ADMIN_PASSWORD}
+      - WEBHOOK_SECRET_KEY=${ADMIN_PASSWORD}
+      - APP_SECRET_KEY=${ADMIN_PASSWORD}
+    volumes:
+      - ./automatisch_storage:/automatisch/storage
+  worker:
+    image: elestio4test/automatisch:${SOFTWARE_VERSION_TAG}
+    restart: always
+    depends_on:
+      - main
+    environment:
+      - APP_ENV=production
+      - REDIS_HOST=redis
+      - POSTGRES_HOST=postgres
+      - POSTGRES_DATABASE=automatisch
+      - POSTGRES_USERNAME=automatisch_user
+      - POSTGRES_PASSWORD=automatisch_password
+      - ENCRYPTION_KEY=${ADMIN_PASSWORD}
+      - WEBHOOK_SECRET_KEY=${ADMIN_PASSWORD}
+      - APP_SECRET_KEY=${ADMIN_PASSWORD}
+      - WORKER=true
+    volumes:
+      - ./automatisch_storage:/automatisch/storage
+  postgres:
+    image: "postgres:14.5"
+    restart: always
+    environment:
+      - POSTGRES_DB=automatisch
+      - POSTGRES_USER=automatisch_user
+      - POSTGRES_PASSWORD=automatisch_password
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+  redis:
+    image: "redis:7.0.4"
+    restart: always
+    volumes:
+      - ./redis_data:/data
