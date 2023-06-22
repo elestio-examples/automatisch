@@ -6,7 +6,7 @@
 [![Elestio examples](https://img.shields.io/static/v1.svg?logo=github&color=f78A38&labelColor=083468&logoColor=ffffff&style=for-the-badge&label=github&message=open%20source)](https://github.com/elestio-examples "Access the source code for all our repositories by viewing them.")
 [![Blog](https://img.shields.io/static/v1.svg?color=f78A38&labelColor=083468&logoColor=ffffff&style=for-the-badge&label=elest.io&message=Blog)](https://blog.elest.io "Latest news about elestio, open source software, and DevOps techniques.")
 
-# automatisch, verified and packaged by Elestio
+# Automatisch, verified and packaged by Elestio
 
 [Automatisch](https://github.com/automatisch/automatisch) is a business automation tool that lets you connect different services like Twitter, Slack, and more to automate your business processes.
 
