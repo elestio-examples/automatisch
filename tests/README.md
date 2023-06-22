@@ -6,15 +6,15 @@
 [![Elestio examples](https://img.shields.io/static/v1.svg?logo=github&color=f78A38&labelColor=083468&logoColor=ffffff&style=for-the-badge&label=github&message=open%20source)](https://github.com/elestio-examples "Access the source code for all our repositories by viewing them.")
 [![Blog](https://img.shields.io/static/v1.svg?color=f78A38&labelColor=083468&logoColor=ffffff&style=for-the-badge&label=elest.io&message=Blog)](https://blog.elest.io "Latest news about elestio, open source software, and DevOps techniques.")
 
-# Flatnotes, verified and packaged by Elestio
+# automatisch, verified and packaged by Elestio
 
-[Flatnotes](https://github.com/dullage/flatnotes) is a self-hosted, database-less note-taking web app that utilises a flat folder of markdown files for storage.
+[Automatisch](https://github.com/automatisch/automatisch) is a business automation tool that lets you connect different services like Twitter, Slack, and more to automate your business processes.
 
-<img src="https://github.com/elestio-examples/flatnotes/raw/main/Flatnotes.png" alt="flatnotes" width="800">
+<img src="https://github.com/elestio-examples/automatisch/raw/main/automatisch.png" alt="automatisch" width="800">
 
-Deploy a <a target="_blank" href="https://elest.io/open-source/flatnotes">fully managed Flatnotes</a> on <a target="_blank" href="https://elest.io/">elest.io</a> if you want automated backups, reverse proxy with SSL termination, firewall, automated OS & Software updates, and a team of Linux experts and open source enthusiasts to ensure your services are always safe, and functional.
+Deploy a <a target="_blank" href="https://elest.io/open-source/automatisch">fully managed Automatisch</a> on <a target="_blank" href="https://elest.io/">elest.io</a> if you want automated backups, reverse proxy with SSL termination, firewall, automated OS & Software updates, and a team of Linux experts and open source enthusiasts to ensure your services are always safe, and functional.
 
-[![deploy](https://github.com/elestio-examples/flatnotes/raw/main/deploy-on-elestio.png)](https://dash.elest.io/deploy?source=cicd&social=dockerCompose&url=https://github.com/elestio-examples/flatnotes)
+[![deploy](https://github.com/elestio-examples/automatisch/raw/main/deploy-on-elestio.png)](https://dash.elest.io/deploy?source=cicd&social=dockerCompose&url=https://github.com/elestio-examples/automatisch)
 
 # Why use Elestio images?
 
@@ -28,7 +28,7 @@ Deploy a <a target="_blank" href="https://elest.io/open-source/flatnotes">fully 
 
 You can deploy it easily with the following command:
 
-    git clone https://github.com/elestio-examples/flatnotes.git
+    git clone https://github.com/elestio-examples/automatisch.git
 
 Copy the .env file from tests folder to the project directory
 
@@ -38,40 +38,86 @@ Edit the .env file with your own values.
 
 Create data folders with correct permissions
 
-    mkdir -p ./data
-    chown -R 1000:1000 ./data
+    mkdir -p ./automatisch_storage
+    mkdir -p ./postgres_data
+    mkdir -p ./redis_data
+    chown -R 1000:1000 ./automatisch_storage
+    chown -R 1000:1000 ./postgres_data
+    chown -R 1000:1000 ./redis_data
 
 Run the project with the following command
 
     docker-compose up -d
 
-You can access the Web UI at: `http://your-domain:28080`
+You can access the Web UI at: `http://your-domain:3210`
 
 ## Docker-compose
 
 Here are some example snippets to help you get started creating a container.
 
-    version: "3"
-
+    version: "3.9"
     services:
-        flatnotes:
-            image: elestio4test/flatnotes:latest
-            restart: always
-            ports:
-                - "172.17.0.1:8080:8080"
-            environment:
-                FLATNOTES_AUTH_TYPE: "password"
-                FLATNOTES_USERNAME: ${ADMIN_EMAIL}
-                FLATNOTES_PASSWORD: ${ADMIN_PASSWORD}
-                FLATNOTES_SECRET_KEY: ${ADMIN_PASSWORD}
+    main:
+        image: elestio4test/automatisch:${SOFTWARE_VERSION_TAG}
+        restart: always
+        ports:
+        - "172.17.0.1:3210:3000"
+        depends_on:
+        redis:
+            condition: service_started
+        environment:
+        - HOST=${BASE_URL}
+        - PROTOCOL=https
+        - PORT=3000
+        - APP_ENV=production
+        - REDIS_HOST=redis
+        - POSTGRES_HOST=postgres
+        - POSTGRES_DATABASE=automatisch
+        - POSTGRES_USERNAME=automatisch_user
+        - POSTGRES_PASSWORD=automatisch_password
+        - ENCRYPTION_KEY=${ADMIN_PASSWORD}
+        - WEBHOOK_SECRET_KEY=${ADMIN_PASSWORD}
+        - APP_SECRET_KEY=${ADMIN_PASSWORD}
         volumes:
-            - "./data:/data"
+        - ./automatisch_storage:/automatisch/storage
+    worker:
+        image: elestio4test/automatisch:${SOFTWARE_VERSION_TAG}
+        restart: always
+        depends_on:
+        - main
+        environment:
+        - APP_ENV=production
+        - REDIS_HOST=redis
+        - POSTGRES_HOST=postgres
+        - POSTGRES_DATABASE=automatisch
+        - POSTGRES_USERNAME=automatisch_user
+        - POSTGRES_PASSWORD=automatisch_password
+        - ENCRYPTION_KEY=${ADMIN_PASSWORD}
+        - WEBHOOK_SECRET_KEY=${ADMIN_PASSWORD}
+        - APP_SECRET_KEY=${ADMIN_PASSWORD}
+        - WORKER=true
+        volumes:
+        - ./automatisch_storage:/automatisch/storage
+    postgres:
+        image: "postgres:14.5"
+        restart: always
+        environment:
+        - POSTGRES_DB=automatisch
+        - POSTGRES_USER=automatisch_user
+        - POSTGRES_PASSWORD=automatisch_password
+        volumes:
+        - ./postgres_data:/var/lib/postgresql/data
+    redis:
+        image: "redis:7.0.4"
+        restart: always
+        volumes:
+        - ./redis_data:/data
 
 # Maintenance
 
 ## Logging
 
-The Elestio Flatnotes Docker image sends the container logs to stdout. To view the logs, you can use the following command:
+The Elestio Automatisch Docker image sends the container logs to stdout. To view the logs, you can use the following command:
 
     docker-compose logs -f
 
@@ -102,6 +148,8 @@ That's it! With these simple steps, you can easily backup and restore your data 
 
 # Links
 
-- <a target="_blank" href="https://github.com/dullage/flatnotes">Flatnotes Github repository</a>
+- <a target="_blank" href="https://github.com/automatisch/automatisch">Automatisch Github repository</a>
 
-- <a target="_blank" href="https://github.com/elestio-examples/flatnotes">Elestio/flatnotes Github repository</a>
+- <a target="_blank" href="https://automatisch.io/docs">Automatisch Documentation</a>
+
+- <a target="_blank" href="https://github.com/elestio-examples/automatisch">Elestio/automatisch Github repository</a>
