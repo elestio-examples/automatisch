@@ -74,7 +74,7 @@ Here are some example snippets to help you get started creating a container.
         - POSTGRES_HOST=postgres
         - POSTGRES_DATABASE=automatisch
         - POSTGRES_USERNAME=automatisch_user
-        - POSTGRES_PASSWORD=automatisch_password
+        - POSTGRES_PASSWORD=${ADMIN_PASSWORD}
         - ENCRYPTION_KEY=${ADMIN_PASSWORD}
         - WEBHOOK_SECRET_KEY=${ADMIN_PASSWORD}
         - APP_SECRET_KEY=${ADMIN_PASSWORD}
@@ -91,7 +91,7 @@ Here are some example snippets to help you get started creating a container.
         - POSTGRES_HOST=postgres
         - POSTGRES_DATABASE=automatisch
         - POSTGRES_USERNAME=automatisch_user
-        - POSTGRES_PASSWORD=automatisch_password
+        - POSTGRES_PASSWORD=${ADMIN_PASSWORD}
         - ENCRYPTION_KEY=${ADMIN_PASSWORD}
         - WEBHOOK_SECRET_KEY=${ADMIN_PASSWORD}
         - APP_SECRET_KEY=${ADMIN_PASSWORD}
@@ -99,19 +99,27 @@ Here are some example snippets to help you get started creating a container.
         volumes:
         - ./automatisch_storage:/automatisch/storage
     postgres:
-        image: "postgres:14.5"
+        image: elestio/postgres:latest
         restart: always
         environment:
         - POSTGRES_DB=automatisch
         - POSTGRES_USER=automatisch_user
-        - POSTGRES_PASSWORD=automatisch_password
+        - POSTGRES_PASSWORD=${ADMIN_PASSWORD}
         volumes:
         - ./postgres_data:/var/lib/postgresql/data
     redis:
-        image: "redis:7.0.4"
+        image: elestio/redis:latest
         restart: always
         volumes:
         - ./redis_data:/data
+
+### Environment variables
+
+|       Variable       | Value (example) |
+| :------------------: | :-------------: |
+| SOFTWARE_VERSION_TAG |     latest      |
+|       BASE_URL       |   your.domain   |
+|    ADMIN_PASSWORD    |  your-password  |
 
 # Maintenance
 
