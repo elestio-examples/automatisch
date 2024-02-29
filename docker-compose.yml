@@ -21,6 +21,8 @@ services:
       - ENCRYPTION_KEY=${ADMIN_PASSWORD}
       - WEBHOOK_SECRET_KEY=${ADMIN_PASSWORD}
       - APP_SECRET_KEY=${ADMIN_PASSWORD}
+      - WEB_APP_URL=https://${BASE_URL}:443
+      - WEBHOOK_URL=https://${BASE_URL}:443
     volumes:
       - ./automatisch_storage:/automatisch/storage
   worker:
@@ -39,6 +41,8 @@ services:
       - WEBHOOK_SECRET_KEY=${ADMIN_PASSWORD}
       - APP_SECRET_KEY=${ADMIN_PASSWORD}
       - WORKER=true
+      - WEB_APP_URL=https://${BASE_URL}:443
+      - WEBHOOK_URL=https://${BASE_URL}:443
     volumes:
       - ./automatisch_storage:/automatisch/storage
   postgres:
